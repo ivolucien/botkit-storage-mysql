@@ -192,6 +192,7 @@
 
  */
 
+var fs = require('fs')
 var mysql = require('mysql');
 
 module.exports = function (config) {
@@ -199,6 +200,34 @@ module.exports = function (config) {
     throw new Error('Need to provide MySQL connection information.');
   }
 
+  var tablePrefix = '';
+
+  var setupTables = function setupTables (options, callback) {
+    options = options || {};
+    tablePrefix = options.tablePrefix || '';
+
+    if (!options.createIfNotExists) {
+      return callback && callback();
+    }
+
+    var connection;
+    try {
+      var multiConfig = config;
+      multiConfig.multipleStatements = true;
+      connection = mysql.createConnection(config);
+      connection.connect();
+
+      var createTablesSql = fs.readFileSync('createTables.sql').toString();
+      createTablesSql = createTablesSql.replace(/TABLE IF NOT EXISTS `botkit_/g, 'TABLE IF NOT EXISTS `' + tablePrefix + 'botkit_');
+
+      connection.query(createTablesSql, function (err, rows, fields) {
+        callback && callback(err);
+      });
+    } catch (e) {
+      console.log('Error', e);
+    }
+    connection && connection.end();
+  }
 
   var get = function (tableName, translator) {
     return function (id, callback) {
@@ -315,6 +344,7 @@ module.exports = function (config) {
   };
 
   var storage = {
+    setupTables: setupTables,
     teams: {
       get: get('botkit_team', dbToTeamJson),
       save: saveTeam('botkit_team'),

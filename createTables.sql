@@ -1,4 +1,4 @@
-CREATE TABLE `botkit_user` (
+CREATE TABLE IF NOT EXISTS `botkit_user` (
   `id` char(9) NOT NULL,
   `access_token` varchar(51) NOT NULL,
   `scopes` varchar(500) NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE `botkit_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-CREATE TABLE `botkit_team` (
+CREATE TABLE IF NOT EXISTS `botkit_team` (
   `id` char(9) NOT NULL,
   `createdBy` char(9) NOT NULL,
   `url` varchar(100) NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE `botkit_team` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-CREATE TABLE `botkit_channel` (
+CREATE TABLE IF NOT EXISTS `botkit_channel` (
   `id` char(9) NOT NULL,
   `json` MEDIUMTEXT NOT NULL,
   PRIMARY KEY (`id`)

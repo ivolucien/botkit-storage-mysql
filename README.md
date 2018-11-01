@@ -18,7 +18,17 @@ var Botkit = require('botkit'),
         storage: mysqlStorage
     });
 ```
+### Setup Tables
 
+Either manually run the contents of `createTables.sql` or call `setupTables()`
+
+There is no table prefix by default, but `setupTables()` must be called with the prefix string if a table prefix is used.
+
+```
+Botkit.setupTables({ tablePrefix: 'groot_', createIfNotExists: true }, callback(err) {
+  // creates `groot_botkit_*` tables
+}
+```
 ##License
 
   This software is licensed under the Apache 2 license, quoted below.
