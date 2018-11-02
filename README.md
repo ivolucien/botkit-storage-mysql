@@ -1,5 +1,7 @@
 # botkit-storage-mysql
 
+**This fork is incomplete**
+
 A MySQL storage module for Botkit.
 
 ## Usage
